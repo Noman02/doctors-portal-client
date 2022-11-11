@@ -1,20 +1,11 @@
-import logo from "./logo.svg";
+import { RouterProvider } from "react-router-dom";
 import "./App.css";
+import { router } from "./Routes/Routes";
 
 function App() {
   return (
-    <div className="App">
-      <h2 className="text-blue-600">Check tailwind</h2>
-      <div className="avatar online">
-        <div className="w-24 rounded-full">
-          <img src="https://placeimg.com/192/192/people" />
-        </div>
-      </div>
-      <div className="avatar offline">
-        <div className="w-24 rounded-full">
-          <img src="https://placeimg.com/192/192/people" />
-        </div>
-      </div>
+    <div className="">
+      <RouterProvider router={router}></RouterProvider>;
     </div>
   );
 }
