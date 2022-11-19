@@ -29,7 +29,7 @@ const AuthProvider = ({ children }) => {
 
   //updateuser
   const updateUser = (profile) => {
-    return updateProfile(user, profile);
+    return updateProfile(auth.currentUser, profile);
   };
 
   //manage users

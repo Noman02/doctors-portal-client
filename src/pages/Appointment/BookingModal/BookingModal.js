@@ -1,10 +1,13 @@
 import { format } from "date-fns";
-import React from "react";
+import React, { useContext } from "react";
+import toast from "react-hot-toast";
+import { authContext } from "../../../contexts/AuthProvider";
 
-const BookingModal = ({ treatment, selectedDate, setTreatment }) => {
-  const { name, slots } = treatment;
+const BookingModal = ({ treatment, selectedDate, setTreatment, refetch }) => {
   //treatment is just another name of appointmentsOptions to name,slots,_id
+  const { name, slots } = treatment;
   const date = format(selectedDate, "PP");
+  const { user } = useContext(authContext);
 
   const handleBooking = (event) => {
     event.preventDefault();
@@ -23,11 +26,30 @@ const BookingModal = ({ treatment, selectedDate, setTreatment }) => {
       phone,
     };
 
+    console.log(booking);
+
     //TODO: send data to the server
     // and once data is saved then close the modal
     // and display success toast
 
-    setTreatment(null);
+    fetch("http://localhost:5000/bookings", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(booking),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.acknowledged) {
+          setTreatment(null);
+          toast.success("Booking Confirmed");
+          refetch();
+        } else {
+          alert(data.message);
+        }
+      });
 
     console.log(booking);
   };
@@ -62,6 +84,7 @@ const BookingModal = ({ treatment, selectedDate, setTreatment }) => {
               ))}
             </select>
             <input
+              defaultValue={user?.displayName}
               name="fullname"
               type="text"
               placeholder="Full Name"
@@ -69,6 +92,7 @@ const BookingModal = ({ treatment, selectedDate, setTreatment }) => {
               required
             />
             <input
+              defaultValue={user?.email}
               name="email"
               type="email"
               placeholder="Email"
