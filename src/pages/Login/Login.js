@@ -26,7 +26,7 @@ const Login = () => {
 
   const handleLogin = (data) => {
     setLoginError("");
-    console.log(data);
+
     const email = data.email;
     const password = data.password;
 
@@ -34,11 +34,10 @@ const Login = () => {
       .then((result) => {
         const user = result.user;
         toast.success("Successfully logged in");
-        console.log(user);
+
         setLoginUserEmail(email);
       })
       .catch((error) => {
-        console.error(error.message);
         setLoginError(error.message);
       });
   };
