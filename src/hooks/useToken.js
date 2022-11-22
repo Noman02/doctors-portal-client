@@ -1,4 +1,3 @@
-import { set } from "date-fns/esm";
 import { useEffect, useState } from "react";
 
 const useToken = (email) => {

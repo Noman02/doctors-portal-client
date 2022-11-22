@@ -6,6 +6,7 @@ const ConfirmationModal = ({
   closeModal,
   handleDeleteSuccess,
   modalData,
+  successButtonName,
 }) => {
   return (
     <div>
@@ -23,7 +24,7 @@ const ConfirmationModal = ({
               htmlFor="my-modal"
               className="btn btn-error"
             >
-              Yes
+              {successButtonName}
             </label>
           </div>
         </div>

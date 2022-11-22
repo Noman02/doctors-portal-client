@@ -1,11 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import ConfirmationModal from "../../Shared/ConfirmationModal/ConfirmationModal";
 import Loading from "../../Shared/Loading/Loading";
 
 const ManageDoctors = () => {
   const [deletingDoctor, setDeletingDoctor] = useState(null);
-  const { data: doctors, isLoading } = useQuery({
+  const {
+    data: doctors,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ["doctors"],
     queryFn: async () => {
       try {
@@ -14,6 +19,7 @@ const ManageDoctors = () => {
             authorization: `bearer${localStorage.getItem("accessToken")}`,
           },
         });
+        console.log(doctors);
         const data = await res.json();
         return data;
       } catch (e) {
@@ -23,7 +29,19 @@ const ManageDoctors = () => {
   });
 
   const handleDeleteSuccess = (doctor) => {
-    console.log(doctor);
+    fetch(`http://localhost:5000/doctors/${doctor._id}`, {
+      method: "DELETE",
+      headers: {
+        authorization: `bearer ${localStorage.getItem("accessToken")}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.deletedCount > 0) {
+          refetch();
+          toast.success(`Doctor ${doctor.name} deleted successfully`);
+        }
+      });
   };
 
   const closeModal = () => {
@@ -38,7 +56,7 @@ const ManageDoctors = () => {
       <h3 className="text-3xl font-semibold text-primary">
         Manage Doctors: {doctors?.length}
       </h3>
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto mt-12">
         <table className="table w-full">
           <thead>
             <tr>
@@ -84,6 +102,7 @@ const ManageDoctors = () => {
           message={`If you delete ${deletingDoctor.name} it can be dangerous for future!!!`}
           handleDeleteSuccess={handleDeleteSuccess}
           modalData={deletingDoctor}
+          successButtonName="Delete"
           closeModal={closeModal}
         ></ConfirmationModal>
       )}
