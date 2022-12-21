@@ -27,13 +27,11 @@ const BookingModal = ({ treatment, selectedDate, setTreatment, refetch }) => {
       price,
     };
 
-    console.log(booking);
-
     //TODO: send data to the server
     // and once data is saved then close the modal
     // and display success toast
 
-    fetch("http://localhost:5000/bookings", {
+    fetch("https://doctors-portal-server-seven-tan.vercel.app/bookings", {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -51,8 +49,6 @@ const BookingModal = ({ treatment, selectedDate, setTreatment, refetch }) => {
           alert(data.message);
         }
       });
-
-    console.log(booking);
   };
 
   return (

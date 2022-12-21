@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import DashboardLayout from "../Layout/DashboardLayout";
 import Main from "../Layout/Main";
+import About from "../pages/About";
 import Appointment from "../pages/Appointment/Appointment/Appointment";
 import AddDoctor from "../pages/Dashboard/AddDoctor/AddDoctor";
 import AllUsers from "../pages/Dashboard/AllUsers/AllUsers";
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
       {
         path: "/signup",
         element: <SignUp></SignUp>,
+      },
+      {
+        path: "/about",
+        element: <About></About>,
       },
     ],
   },
@@ -78,13 +83,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/dashboard/payment/:id",
-        element: (
-          <AdminRoute>
-            <Payment></Payment>
-          </AdminRoute>
-        ),
+        element: <Payment></Payment>,
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/bookings/${params.id}`),
+          fetch(
+            `https://doctors-portal-server-seven-tan.vercel.app/bookings/${params.id}`
+          ),
       },
     ],
   },
